@@ -1,0 +1,285 @@
+/* ═══════════════════════════════════════════════
+   BASE
+═══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --w: 400px;
+  --h: 600px;
+
+  /* Paleta aurora quente */
+  --amber:   #f5a623;
+  --coral:   #f06060;
+  --peach:   #ffd4b2;
+  --cream:   #fff8f0;
+  --dark:    #0e0a06;
+
+  /* Glass */
+  --g-bg:    rgba(255, 240, 220, 0.08);
+  --g-bdr:   rgba(255, 220, 170, 0.20);
+  --g-shdw:  rgba(0, 0, 0, 0.45);
+  --blur:    22px;
+
+  /* Botões */
+  --dig-bg:  rgba(255, 245, 230, 0.09);
+  --dig-bdr: rgba(255, 220, 180, 0.14);
+  --aux-bg:  rgba(255, 200, 140, 0.12);
+  --op-bg:   rgba(240, 140, 80, 0.22);
+  --op-bdr:  rgba(255, 180, 100, 0.30);
+  --eq-bg:   rgba(245, 166, 35, 0.38);
+  --eq-bdr:  rgba(255, 200, 80, 0.50);
+
+  --font-display: 'DM Serif Display', serif;
+  --font-mono:    'DM Mono', monospace;
+}
+
+body {
+  font-family: var(--font-mono);
+  background: var(--dark);
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════
+   CANVAS DE FUNDO (aurora animada em JS)
+═══════════════════════════════════════════════ */
+#bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* ═══════════════════════════════════════════════
+   GRAIN
+═══════════════════════════════════════════════ */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.038;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px;
+}
+
+/* ═══════════════════════════════════════════════
+   STAGE
+═══════════════════════════════════════════════ */
+.stage {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+}
+
+/* ═══════════════════════════════════════════════
+   CALCULATOR  400 × 600
+═══════════════════════════════════════════════ */
+.calc {
+  position: relative;
+  width:  var(--w);
+  height: var(--h);
+  padding: 28px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  background: var(--g-bg);
+  border: 1px solid var(--g-bdr);
+  border-radius: 32px;
+  backdrop-filter: blur(var(--blur)) saturate(160%) brightness(1.05);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(160%) brightness(1.05);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.04) inset,
+    0 30px 80px var(--g-shdw),
+    0 2px 4px rgba(255,200,120,0.06) inset;
+
+  animation: floatin 6s ease-in-out infinite alternate;
+}
+
+@keyframes floatin {
+  from { transform: translateY(0px); }
+  to   { transform: translateY(-6px); }
+}
+
+/* Reflexo de vidro no topo */
+.shine {
+  pointer-events: none;
+  position: absolute;
+  top: 0; left: 12%; right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 230, 180, 0.55) 30%,
+    rgba(255, 255, 220, 0.80) 50%,
+    rgba(255, 230, 180, 0.55) 70%,
+    transparent
+  );
+  border-radius: 50%;
+  filter: blur(0.5px);
+}
+
+/* ═══════════════════════════════════════════════
+   DISPLAY
+═══════════════════════════════════════════════ */
+.display {
+  flex: 0 0 auto;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 2px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 210, 150, 0.12);
+}
+
+.expr {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: rgba(255, 220, 160, 0.45);
+  letter-spacing: 0.06em;
+  min-height: 1.1em;
+  transition: opacity 0.2s;
+}
+
+.number {
+  font-family: var(--font-display);
+  font-size: 3.2rem;
+  line-height: 1;
+  color: var(--cream);
+  letter-spacing: -0.01em;
+  word-break: break-all;
+  text-align: right;
+  text-shadow: 0 2px 24px rgba(245, 166, 35, 0.25);
+  transition: font-size 0.15s ease;
+}
+
+/* ═══════════════════════════════════════════════
+   GRID DE BOTÕES  4 col × 5 rows
+═══════════════════════════════════════════════ */
+.grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 10px;
+}
+
+/* ═══════════════════════════════════════════════
+   BOTÕES – base
+═══════════════════════════════════════════════ */
+.btn {
+  border: 1px solid var(--dig-bdr);
+  border-radius: 18px;
+  background: var(--dig-bg);
+  color: var(--cream);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.01em;
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.07) inset,
+    0 4px 16px rgba(0,0,0,0.22);
+
+  transition:
+    background   0.18s ease,
+    box-shadow   0.18s ease,
+    transform    0.10s ease,
+    border-color 0.18s ease;
+}
+
+/* Ripple highlight */
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--rx,50%) var(--ry,50%), rgba(255,230,180,0.18) 0%, transparent 65%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: inherit;
+}
+.btn:hover::after  { opacity: 1; }
+.btn:active        { transform: scale(0.90); box-shadow: 0 1px 6px rgba(0,0,0,0.3); }
+
+/* ═══════════════════════════════════════════════
+   VARIAÇÕES
+═══════════════════════════════════════════════ */
+
+/* Auxiliares: AC ± % */
+.btn.aux {
+  background: var(--aux-bg);
+  border-color: rgba(255, 215, 160, 0.16);
+  color: rgba(255, 220, 170, 0.90);
+  font-weight: 500;
+}
+.btn.aux:hover { background: rgba(255, 200, 140, 0.20); }
+
+/* Operadores: ÷ × − + */
+.btn.op {
+  background: var(--op-bg);
+  border-color: var(--op-bdr);
+  color: var(--amber);
+  font-size: 1.2rem;
+  font-weight: 500;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.08) inset,
+    0 4px 20px rgba(240, 120, 40, 0.18);
+}
+.btn.op:hover {
+  background: rgba(240, 140, 80, 0.34);
+  box-shadow: 0 4px 26px rgba(240, 120, 40, 0.30);
+}
+.btn.op.lit {
+  background: rgba(245, 166, 35, 0.36);
+  border-color: rgba(255, 200, 80, 0.50);
+  color: #ffe8a0;
+  box-shadow: 0 0 22px rgba(245, 166, 35, 0.35), 0 1px 0 rgba(255,255,255,0.10) inset;
+}
+
+/* Igual */
+.btn.eq {
+  background: var(--eq-bg);
+  border-color: var(--eq-bdr);
+  color: #fff5dc;
+  font-size: 1.3rem;
+  font-weight: 500;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.15) inset,
+    0 6px 28px rgba(245, 166, 35, 0.28);
+  text-shadow: 0 1px 6px rgba(255,180,60,0.40);
+}
+.btn.eq:hover {
+  background: rgba(245, 166, 35, 0.54);
+  box-shadow: 0 6px 36px rgba(245, 166, 35, 0.42);
+}
+
+/* Zero largo */
+.btn.wide {
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  padding-left: 22px;
+}
+
+/* ═══════════════════════════════════════════════
+   ANIMAÇÃO DO RESULTADO
+═══════════════════════════════════════════════ */
+@keyframes numPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.07); color: var(--amber); }
+  100% { transform: scale(1); }
+}
+.number.pop { animation: numPop 0.22s ease; }

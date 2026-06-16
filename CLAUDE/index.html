@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calc</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Fundo vivo -->
+  <canvas id="bg"></canvas>
+
+  <!-- Grain overlay -->
+  <div class="grain"></div>
+
+  <!-- Calculadora centralizada -->
+  <main class="stage">
+    <div class="calc">
+
+      <!-- Reflexo de topo -->
+      <div class="shine"></div>
+
+      <!-- Display -->
+      <div class="display">
+        <div class="expr" id="expr">&nbsp;</div>
+        <div class="number" id="number">0</div>
+      </div>
+
+      <!-- Grade de botões -->
+      <div class="grid">
+
+        <!-- linha 1 -->
+        <button class="btn aux" data-fn="clear">AC</button>
+        <button class="btn aux" data-fn="sign">±</button>
+        <button class="btn aux" data-fn="pct">%</button>
+        <button class="btn op"  data-op="÷">÷</button>
+
+        <!-- linha 2 -->
+        <button class="btn dig" data-d="7">7</button>
+        <button class="btn dig" data-d="8">8</button>
+        <button class="btn dig" data-d="9">9</button>
+        <button class="btn op"  data-op="×">×</button>
+
+        <!-- linha 3 -->
+        <button class="btn dig" data-d="4">4</button>
+        <button class="btn dig" data-d="5">5</button>
+        <button class="btn dig" data-d="6">6</button>
+        <button class="btn op"  data-op="−">−</button>
+
+        <!-- linha 4 -->
+        <button class="btn dig" data-d="1">1</button>
+        <button class="btn dig" data-d="2">2</button>
+        <button class="btn dig" data-d="3">3</button>
+        <button class="btn op"  data-op="+">+</button>
+
+        <!-- linha 5 -->
+        <button class="btn dig wide" data-d="0">0</button>
+        <button class="btn dig" data-fn="dot">.</button>
+        <button class="btn eq"  data-fn="eq">=</button>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
