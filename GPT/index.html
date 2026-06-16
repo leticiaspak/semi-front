@@ -3,37 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Glassmorphism</title>
+    <title>Calculadora Fofa</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="calculator">
+    <div id="flores"></div>
+
+    <div class="calculadora">
         <input type="text" id="display" readonly>
 
-        <div class="buttons">
-            <button onclick="clearDisplay()">C</button>
-            <button onclick="appendValue('/')">/</button>
-            <button onclick="appendValue('*')">*</button>
-            <button onclick="deleteLast()">⌫</button>
+        <div class="botoes">
+            <button onclick="limpar()">C</button>
+            <button onclick="adicionar('/')">÷</button>
+            <button onclick="adicionar('*')">×</button>
+            <button onclick="apagar()">⌫</button>
 
-            <button onclick="appendValue('7')">7</button>
-            <button onclick="appendValue('8')">8</button>
-            <button onclick="appendValue('9')">9</button>
-            <button onclick="appendValue('-')">-</button>
+            <button onclick="adicionar('7')">7</button>
+            <button onclick="adicionar('8')">8</button>
+            <button onclick="adicionar('9')">9</button>
+            <button onclick="adicionar('-')">−</button>
 
-            <button onclick="appendValue('4')">4</button>
-            <button onclick="appendValue('5')">5</button>
-            <button onclick="appendValue('6')">6</button>
-            <button onclick="appendValue('+')">+</button>
+            <button onclick="adicionar('4')">4</button>
+            <button onclick="adicionar('5')">5</button>
+            <button onclick="adicionar('6')">6</button>
+            <button onclick="adicionar('+')">+</button>
 
-            <button onclick="appendValue('1')">1</button>
-            <button onclick="appendValue('2')">2</button>
-            <button onclick="appendValue('3')">3</button>
-            <button class="equal" onclick="calculate()">=</button>
+            <button onclick="adicionar('1')">1</button>
+            <button onclick="adicionar('2')">2</button>
+            <button onclick="adicionar('3')">3</button>
 
-            <button class="zero" onclick="appendValue('0')">0</button>
-            <button onclick="appendValue('.')">.</button>
+            <button class="igual" onclick="calcular()">=</button>
+
+            <button class="zero" onclick="adicionar('0')">0</button>
+            <button onclick="adicionar('.')">.</button>
         </div>
     </div>
 
