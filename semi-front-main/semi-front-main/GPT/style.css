@@ -1,0 +1,101 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins,sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#f8d7e6,#f5b6cf);
+    overflow:hidden;
+    position:relative;
+}
+
+/* FLORES */
+
+#flores{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:1;
+}
+
+.flor{
+    position:absolute;
+    top:-50px;
+    animation:cair linear forwards;
+}
+
+@keyframes cair{
+    from{
+        transform:translateY(-50px) rotate(0deg);
+    }
+    to{
+        transform:translateY(110vh) rotate(360deg);
+    }
+}
+
+/* CALCULADORA */
+
+.calculadora{
+    width:400px;
+    height:600px;
+    background:white;
+    border-radius:25px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(92,13,45,.25);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    z-index:2;
+}
+
+#display{
+    width:100%;
+    height:100px;
+    border:none;
+    border-radius:15px;
+    background:#fce4ec;
+    color:#5c0d2d;
+    font-size:2.2rem;
+    text-align:right;
+    padding:15px;
+    margin-bottom:20px;
+    font-weight:bold;
+}
+
+.botoes{
+    flex:1;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+button{
+    border:none;
+    border-radius:15px;
+    font-size:1.4rem;
+    cursor:pointer;
+    background:#f8c8dc;
+    color:#5c0d2d;
+    transition:.2s;
+    font-weight:600;
+}
+
+button:hover{
+    transform:translateY(-3px);
+}
+
+.igual{
+    grid-row:span 2;
+    background:#7b163d;
+    color:white;
+}
+
+.zero{
+    grid-column:span 2;
+}
